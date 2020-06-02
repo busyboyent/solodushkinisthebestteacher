@@ -16,7 +16,7 @@ class Main:
     def start(self):
         server = Server()
 
-        print("server has started working")
+        print("server start working")
         server.upload_cash()
         try:
             while True:
