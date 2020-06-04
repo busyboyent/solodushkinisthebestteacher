@@ -20,7 +20,11 @@ class Main:
         server.upload_cash()
         try:
             while True:
+                print("Введите адрес")
+                inp = input()
+                server.cli(str(inp))
                 server.make_request()
+                time.sleep(0.2)
                 server.take_receive()
                 time.sleep(0.2)
                 server.check_TTL()
@@ -55,7 +59,7 @@ class Server():
                 self.cache = pickle.load(f)
                 self.check_TTL()
             except Exception:
-                print('not found cache file')
+                pass
 
     def make_request(self):
         try:
@@ -92,6 +96,11 @@ class Server():
             cache, ttl = self.cache[i]
             if ttl < int(time.time()):
                 del self.cache[i]
+
+    def cli(self, addr):
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.sendto(dnslib.DNSRecord.question(addr).pack(), ("localhost", 53))
+        s.close()
 
 
 if __name__ == "__main__":
